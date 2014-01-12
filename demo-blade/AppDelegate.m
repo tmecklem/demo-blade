@@ -8,10 +8,17 @@
 
 #import "AppDelegate.h"
 
+@interface AppDelegate()
+
+@property (nonatomic, strong) TMGestureMonster *monster;
+
+@end
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    self.monster = [[TMGestureMonster alloc] initWithView:self.window];
     // Override point for customization after application launch.
     return YES;
 }

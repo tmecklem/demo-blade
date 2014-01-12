@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TMGestureMonster.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
