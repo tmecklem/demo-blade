@@ -13,6 +13,7 @@
 @property(nonatomic, strong) UIPanGestureRecognizer *panRecognizer;
 @property(nonatomic, strong) UITapGestureRecognizer *tapRecognizer;
 @property(nonatomic, weak) UIView *view;
+@property(nonatomic, strong) UIImageView *panImageView;
 
 @end
 
@@ -40,13 +41,28 @@
             || gestureRecognizer == self.tapRecognizer || otherGestureRecognizer == self.tapRecognizer;
 }
 
--(IBAction)panPerformed:(UIGestureRecognizer *)panGestureRecognizer {
+-(IBAction)panPerformed:(UIPanGestureRecognizer *)panGestureRecognizer {
     if(UIGestureRecognizerStateBegan == panGestureRecognizer.state) {
-        NSLog (@"Started");
+        UIImage *image = [UIImage imageNamed:@"star.png"];
+        self.panImageView = [[UIImageView alloc] initWithImage:image];
+        
+        [self.view addSubview:self.panImageView];
+        [UIView animateWithDuration:0.05f animations:^{
+            CGPoint location = [panGestureRecognizer locationInView:self.view];
+            self.panImageView.frame = CGRectMake(location.x - (image.size.width/2), location.y - (image.size.height/2), image.size.width, image.size.height);
+        } completion:nil];
+        
     } else if (UIGestureRecognizerStateChanged == panGestureRecognizer.state) {
-        NSLog (@"Changed");
+        CGPoint location = [panGestureRecognizer locationInView:self.view];
+        self.panImageView.frame = CGRectMake(location.x - (self.panImageView.frame.size.width/2), location.y - (self.panImageView.frame.size.height/2), self.panImageView.frame.size.width, self.panImageView.frame.size.height);
     } else if(UIGestureRecognizerStateEnded == panGestureRecognizer.state) {
-        NSLog(@"Ended");
+        UIImageView *fadingImageView = self.panImageView;
+        [UIView animateWithDuration:0.2f delay:1.0f options:0 animations:^{
+            fadingImageView.alpha = 0.0f;
+        } completion:^(BOOL finished) {
+            [fadingImageView removeFromSuperview];
+        }];
+
     }
 }
 
